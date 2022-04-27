@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         btnRegistrar.setOnClickListener(view -> {
             obtenerInformacion();
             mostrarMensaje();
+            //validar cada campo
         });
     }
 

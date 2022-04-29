@@ -3,7 +3,9 @@ package com.example.registrounivalle_a2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnRegistrar;
     private Switch swEstudiante;
 
+    String nombre;
     private ArrayList<String> campos;
 
     @Override
@@ -24,13 +27,50 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inicializarVistas();
+        etCodigo.setVisibility(View.GONE);
         btnRegistrar.setOnClickListener(view -> {
             obtenerInformacion();
-            mostrarMensaje();
+            contarCaracteres();
+            //mostrarMensaje();
             //validar cada campo
+        });
+        /*
+        Para poder interactuar con el evento que pasa en los
+        checkboxes y switches que es su marcado y desmarcado
+        se debe configurar un Listener para que pueda estar
+        pendiente a cuando pasa el evento.
+        y el evento se llama CheckedChanged
+         */
+        swEstudiante.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                gestionarVistaCodigo(b);
+            }
         });
     }
 
+    private void gestionarVistaCodigo(boolean marcado) {
+        if(marcado) {
+            etCodigo.setVisibility(View.VISIBLE);
+        } else {
+            etCodigo.setVisibility(View.GONE);
+        }
+    }
+
+    private void mostrarVentana(boolean b) {
+        String mensaje = "no estoy marcado";
+        if(b) {
+            mensaje = "estoy marcado";
+        }
+        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
+    }
+
+    private void contarCaracteres() {
+        if (swEstudiante.isChecked()) { //true si esta marcado o false si no esta marcado
+            Toast.makeText(this,"Caracteres: " + nombre.length(),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
     private void inicializarVistas() {
@@ -44,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void obtenerInformacion() {
-        String nombre = etNombre.getText().toString();
+        nombre = etNombre.getText().toString();
         String apellido = etApellido.getText().toString();
         String email = etEmail.getText().toString();
         String celular = etCelular.getText().toString();

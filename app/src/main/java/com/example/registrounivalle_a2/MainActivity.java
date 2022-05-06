@@ -2,6 +2,7 @@ package com.example.registrounivalle_a2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnRegistrar;
     private Switch swEstudiante;
 
-    String nombre;
+    String nombre, apellido;
     private ArrayList<String> campos;
 
     @Override
@@ -30,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         etCodigo.setVisibility(View.GONE);
         btnRegistrar.setOnClickListener(view -> {
             obtenerInformacion();
-            contarCaracteres();
+            //contarCaracteres();
+            pasarOtraPantalla();
             //mostrarMensaje();
             //validar cada campo
         });
@@ -47,6 +49,27 @@ public class MainActivity extends AppCompatActivity {
                 gestionarVistaCodigo(b);
             }
         });
+    }
+
+    private void pasarOtraPantalla() {
+        /*
+        Para pasar de pantallas necesitas el componente de Android llamado INTENT
+        Intent intentara resolver el paso de una pantalla A a una pantalla B
+        Crear una instancia de la clase Intent, como parametros de su constructor
+        deben indicar desde donde hacia donde quieren ir.
+        Las pantallas deben ser referenciadas en el ámbito o contexto de sus clases.
+        Existe un metodo llamado .startActivity() que es el que lanzará la pantalla destino
+        siempre y cuando pueda resolverse el Intent.
+        */
+        Intent intencion = new Intent(this,HomeActivity.class);
+        //Definir el paso de datos usando el Archivo temporal
+        //Cada registro o fila del archivo es un dato que quieren pasar
+        //El formato de cada registro es CLAVE(key) -> VALOR(value)
+        //La Clave es una cadena que debe ser un valor unico para no reemplazar o sobreescribir sus datos
+        //Que el archivo temporal esta en el Intent y que se llama EXTRAS.
+        intencion.putExtra("nombre_persona", nombre);
+        intencion.putExtra("apellido_persona", apellido);
+        startActivity(intencion);
     }
 
     private void gestionarVistaCodigo(boolean marcado) {
@@ -85,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void obtenerInformacion() {
         nombre = etNombre.getText().toString();
-        String apellido = etApellido.getText().toString();
+        apellido = etApellido.getText().toString();
         String email = etEmail.getText().toString();
         String celular = etCelular.getText().toString();
         String codigo = etCodigo.getText().toString();
